@@ -1,0 +1,107 @@
+{% extends 'plants/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="plant-detail-container">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">{{ plant.name }}</h1>
+        <a href="{% url 'edit_plant' plant.pk %}" class="btn btn-outline-light">
+            <i class="fas fa-edit me-2"></i>Edit Plant
+        </a>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="row g-4">
+        <!-- Left Column - Image & Attributes -->
+        <div class="col-lg-4">
+            <div class="card plant-image-card mb-4">
+                {% if plant.image %}
+                    <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+                {% else %}
+                    <div class="image-placeholder">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="card attributes-card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Plant Info</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="plant-attributes">
+                        <dt>Species</dt>
+                        <dd>{{ plant.species|default:"-" }}</dd>
+                        
+                        <dt>Location</dt>
+                        <dd>{{ plant.location|default:"-" }}</dd>
+                        
+                        <dt>Category</dt>
+                        <dd>{{ plant.category|default:"Uncategorized" }}</dd>
+                        
+                        <dt>Watering Interval</dt>
+                        <dd>{{ plant.watering_interval }} days</dd>
+                        
+                        <dt>Date Added</dt>
+                        <dd>{{ plant.created_date|date:"M j, Y" }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Timeline -->
+        <div class="col-lg-8">
+            <div class="card timeline-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i>Activity Timeline</h5>
+                    <div class="badge bg-teal">
+                        {{ watering_count }} waterings · {{ notes_count }} notes
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    {% if timeline %}
+                        <div class="timeline">
+                            {% for event in timeline %}
+                                <div class="timeline-item {% if forloop.first %}first{% endif %}">
+                                    <div class="timeline-icon">
+                                        {% if event.date %}  <!-- Watering -->
+                                            <i class="fas fa-tint"></i>
+                                        {% else %}  <!-- Note -->
+                                            <i class="fas fa-sticky-note"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-header">
+                                            <span class="timeline-date">
+                                                {{ event.date|date:"M j, Y"|default:event.created_at|date:"M j, Y" }}
+                                            </span>
+                                            <span class="badge event-type">
+                                                {% if event.date %}Watering{% else %}Note{% endif %}
+                                            </span>
+                                        </div>
+                                        {% if not event.date %}  <!-- Note content -->
+                                            <div class="timeline-note">
+                                                {{ event.content|linebreaks }}
+                                                {% if event.updated_at != event.created_at %}
+                                                    <small class="text-muted">(edited)</small>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-stream"></i>
+                            <p class="text-muted mt-3">No activity recorded yet</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

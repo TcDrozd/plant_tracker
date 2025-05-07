@@ -1,0 +1,468 @@
+/* ==================== */
+/* BASE & LAYOUT STYLES */
+/* ==================== */
+
+body {
+    background-color: #15181d;
+    color: #e9ecef;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.015em;
+}
+
+.container {
+    flex: 1;
+}
+
+.bg-dark {
+    background-color: #1a1e24 !important;
+}
+
+.text-muted {
+    color: #868e96 !important;
+}
+
+/* ============== */
+/* TYPOGRAPHY */
+/* ============== */
+
+h1, h2, h3 {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #f8f9fa;
+}
+
+/* ============== */
+/* FORM ELEMENTS */
+/* ============== */
+
+.form-control {
+    border-radius: 0.25rem;
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+input[type="text"], 
+textarea, 
+select {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type="text"]:focus, 
+textarea:focus, 
+select:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* ============== */
+/* CARD COMPONENTS */
+/* ============== */
+
+.plant-card {
+    background: linear-gradient(145deg, #1a1e24, #23282f);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-header h5 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;
+    color: #212529; /* Explicit dark color */
+    font-weight: 600; /* Maintains boldness */
+    margin-bottom: 0; /* Removes default margin */
+}
+
+/* Dropdown menu contrast */
+.card-header .dropdown-menu {
+    background-color: #23282f;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.card-header .dropdown-item {
+    color: #e9ecef;
+}
+
+.card-header .dropdown-item:hover {
+    background-color: rgba(23, 162, 184, 0.2);
+}
+
+/* ============== */
+/* WATERING SYSTEM */
+/* ============== */
+
+.watering-info {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+}
+
+.watering-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+}
+
+.status-good {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+}
+
+.status-warning {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+.status-danger {
+    background: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+}
+
+/* ============== */
+/* BUTTONS */
+/* ============== */
+
+.water-plant-btn {
+    background: linear-gradient(45deg, #17a2b8, #138496);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.water-plant-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+}
+
+.water-plant-btn:active {
+    transform: translateY(0);
+}
+
+#water-all-btn {
+    background: rgba(23, 162, 184, 0.15);
+    border: 1px solid rgba(23, 162, 184, 0.3);
+    transition: all 0.3s ease;
+}
+
+#water-all-btn:hover {
+    background: rgba(23, 162, 184, 0.25);
+}
+
+/* ============== */
+/* ANIMATIONS */
+/* ============== */
+
+@keyframes waterRipple {
+    0% {
+        opacity: 1;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+.watering-animation {
+    position: relative;
+}
+
+.watering-animation::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background: rgba(23, 162, 184, 0.4);
+    border-radius: 50%;
+    animation: waterRipple 0.6s ease-out;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.skeleton-loading {
+    background: linear-gradient(90deg, #2d333a 25%, #363d45 50%, #2d333a 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 8px;
+    color: transparent !important;
+    user-select: none;
+}
+
+/* ============== */
+/* LAYOUT COMPONENTS */
+/* ============== */
+
+.category-group {
+    margin-bottom: 3rem;
+}
+
+.category-header {
+    padding: 1rem 1.5rem;
+    background: linear-gradient(90deg, rgba(23, 162, 184, 0.15), transparent);
+    border-left: 4px solid #17a2b8;
+    border-radius: 6px;
+    margin: 2rem 0 1.5rem;
+}
+
+.category-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #e9ecef; /* for text color */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3); /* Improves readability */
+}
+
+/* More contrast on the water all button */
+.category-header .btn-outline-info {
+    color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: #17a2b8;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+}
+
+.empty-state .btn {
+    margin-top: 1.5rem;
+}
+
+/* Collapse Indicators */
+.collapse-icon {
+    transition: transform 0.2s ease;
+    font-size: 0.9em;
+    color: #17a2b8;
+}
+
+.collapsed .collapse-icon {
+    transform: rotate(-90deg);
+}
+
+/* Category Badges */
+.badge.bg-teal {
+    background-color: #20c997;
+    font-weight: 500;
+    font-size: 0.75em;
+}
+
+/* Hover Effects */
+.category-header:hover {
+    background: linear-gradient(90deg, rgba(23, 162, 184, 0.25), transparent) !important;
+}
+
+/* Smooth Transitions */
+.collapse {
+    transition: height 0.3s ease, opacity 0.2s ease;
+}
+
+/* Plant Detail Styles */
+.plant-detail-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.plant-image-card {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1e24;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.plant-image-card img {
+    object-fit: cover;
+    height: 350px;
+    width: 100%;
+}
+
+.image-placeholder {
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #23282f;
+    color: #2d7a8c;
+}
+
+.image-placeholder i {
+    font-size: 4rem;
+    opacity: 0.5;
+}
+
+.attributes-card {
+    background: #1a1e24;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.plant-attributes dt {
+    color: #17a2b8;
+    font-weight: 500;
+    margin-top: 0.75rem;
+}
+
+.plant-attributes dd {
+    color: #dee2e6;
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Timeline Styles */
+.timeline {
+    position: relative;
+    padding-left: 40px;
+    margin-left: 20px;
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 15px;
+    width: 2px;
+    height: calc(100% - 30px);
+    background: rgba(23, 162, 184, 0.3);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.timeline-icon {
+    position: absolute;
+    left: -40px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #17a2b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.timeline-content {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.2s ease;
+}
+
+.timeline-content:hover {
+    transform: translateX(5px);
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-date {
+    color: #adb5bd;
+    font-size: 0.9rem;
+}
+
+.event-type {
+    background: rgba(23, 162, 184, 0.15);
+    color: #17a2b8;
+    font-weight: 500;
+}
+
+.timeline-note {
+    color: #dee2e6;
+    line-height: 1.6;
+}
+
+/* ==================== */
+.card-clickable-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    opacity: 0;
+}
+
+.card-clickable-area:hover {
+    opacity: 0.1;
+    background-color: var(--bs-primary);
+    transition: opacity 0.2s ease;
+}
+
+.card-header, 
+.card-body, 
+.card-footer {
+    position: relative;
+    z-index: 2; /* Ensure content stays above clickable area */
+    background-color: inherit; /* Maintain card background */
+}
+
+/* Better dropdown positioning */
+.dropdown-menu {
+    z-index: 1000;
+}
