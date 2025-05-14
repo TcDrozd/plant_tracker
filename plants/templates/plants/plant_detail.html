@@ -64,27 +64,27 @@
                     {% if timeline %}
                         <div class="timeline">
                             {% for event in timeline %}
-                                <div class="timeline-item {% if forloop.first %}first{% endif %}">
+                                <div class="timeline-item">
                                     <div class="timeline-icon">
-                                        {% if event.date %}  <!-- Watering -->
+                                        {% if event.type == 'watering' %}
                                             <i class="fas fa-tint"></i>
-                                        {% else %}  <!-- Note -->
+                                        {% else %}
                                             <i class="fas fa-sticky-note"></i>
                                         {% endif %}
                                     </div>
                                     <div class="timeline-content">
                                         <div class="timeline-header">
                                             <span class="timeline-date">
-                                                {{ event.date|date:"M j, Y"|default:event.created_at|date:"M j, Y" }}
+                                                {{ event.date|date:"M j, Y" }}
                                             </span>
                                             <span class="badge event-type">
-                                                {% if event.date %}Watering{% else %}Note{% endif %}
+                                                {{ event.type|title }}
                                             </span>
                                         </div>
-                                        {% if not event.date %}  <!-- Note content -->
+                                        {% if event.type == 'note' %}
                                             <div class="timeline-note">
-                                                {{ event.content|linebreaks }}
-                                                {% if event.updated_at != event.created_at %}
+                                                {{ event.object.content|linebreaks }}
+                                                {% if event.object.updated_at != event.object.created_at %}
                                                     <small class="text-muted">(edited)</small>
                                                 {% endif %}
                                             </div>

@@ -136,3 +136,24 @@ $(document).ready(function() {
         });
     });
 });
+
+// JavaScript to handle navigation on plant cards
+document.addEventListener('DOMContentLoaded', function() {
+  // Allow buttons to be clicked without triggering navigation
+  document.querySelectorAll('.plant-card .dropdown button, .plant-card .water-plant-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  });
+  
+  // Make clicking anywhere else on the card navigate to detail
+  document.querySelectorAll('.plant-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Only navigate if the click wasn't on a button or dropdown
+      if (!e.target.closest('.dropdown') && !e.target.closest('.water-plant-btn')) {
+        const link = this.querySelector('a').getAttribute('href');
+        window.location.href = link;
+      }
+    });
+  });
+});

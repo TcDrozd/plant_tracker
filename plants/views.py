@@ -7,29 +7,21 @@ from itertools import chain
 from operator import attrgetter
 from django.views.generic import DetailView
 from .forms import PlantForm
+from collections import defaultdict
 
 def dashboard(request):
-    # Get all plants ordered by name
-    plants = Plant.objects.all()
-    
-    # Group plants by category
-    categories = {}
-    uncategorized = []
-    
+    group_by = request.session.get('group_by', 'category')  # or 'location'
+    plants = Plant.objects.select_related('category', 'location')
+
+    groups = defaultdict(list)
     for plant in plants:
-        if plant.category:
-            if plant.category not in categories:
-                categories[plant.category] = []
-            categories[plant.category].append(plant)
-        else:
-            uncategorized.append(plant)
-    
-    # Sort categories alphabetically
-    sorted_categories = dict(sorted(categories.items()))
-    
+        key_obj = getattr(plant, group_by)
+        key = key_obj.name if key_obj else "Uncategorized"
+        groups[key].append(plant)
+
     context = {
-        'categories': sorted_categories,
-        'uncategorized': uncategorized,
+        'categories': groups,
+        'uncategorized': groups.get("Uncategorized", []),
     }
     return render(request, 'plants/dashboard.html', context)
 
@@ -70,14 +62,27 @@ class PlantDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         plant = self.get_object()
         
-        # Combine watering and notes into timeline
-        waterings = Watering.objects.filter(plant=plant)
-        notes = Note.objects.filter(plant=plant)
-        timeline = sorted(
-            chain(waterings, notes),
-            key=attrgetter('date' if hasattr(waterings.first(), 'date') else 'created_at'),
-            reverse=True
-        )
+        waterings = plant.watering_set.all()
+        notes = plant.note_set.all()
+        
+        # Create timeline with proper field access
+        timeline = []
+        for watering in waterings:
+            timeline.append({
+                'type': 'watering',
+                'date': watering.date,
+                'object': watering
+            })
+        
+        for note in notes:
+            timeline.append({
+                'type': 'note',
+                'date': note.created_at,
+                'object': note
+            })
+        
+        # Sort by date descending
+        timeline.sort(key=lambda x: x['date'], reverse=True)
         
         context.update({
             'timeline': timeline,
@@ -113,3 +118,10 @@ def water_category(request, category):
     for plant in plants:
         Watering.objects.create(plant=plant, date=today)
     return JsonResponse({'status': 'success'})
+
+def update_grouping(request):
+    if request.method == 'POST':
+        group_by = request.POST.get('group_by')
+        if group_by in ['category', 'location']:
+            request.session['group_by'] = group_by
+    return redirect('dashboard')

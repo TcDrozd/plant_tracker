@@ -1,80 +1,82 @@
+<!-- templates/plants/plant_card.html -->
 <div class="col">
-    <div class="card h-100 plant-card position-relative">
-        <!-- Main clickable area (excluding dropdown and water button) -->
-        <a href="{% url 'plant_detail' plant.id %}" class="card-clickable-area"></a>
-        
-        <div class="card-header d-flex justify-content-between align-items-center bg-light position-relative">
-            <h5 class="card-title mb-0">{{ plant.name }}</h5>
-            <div class="dropdown">
-                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown" 
-                        onclick="event.stopPropagation()">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="{% url 'edit_plant' plant.id %}">
-                        <i class="fas fa-edit me-2"></i>Edit</a></li>
-                    <li>
-                        <form method="post" action="{% url 'delete_plant' plant.id %}" 
-                              onsubmit="return confirm('Delete this plant?')">
-                            {% csrf_token %}
-                            <button type="submit" class="dropdown-item text-danger">
-                                <i class="fas fa-trash me-2"></i>Delete
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="card-body position-relative">
-            {% if plant.description %}
-                <p class="card-text">{{ plant.description|truncatechars:100 }}</p>
-            {% endif %}
-            
-            {% if plant.location %}
-                <p class="card-text">
-                    <small class="text-muted">
-                        <i class="fas fa-map-marker-alt me-2"></i>{{ plant.location }}
-                    </small>
-                </p>
-            {% endif %}
-            
-            <div class="watering-info mt-3">
-                <div class="d-flex justify-content-between mb-2">
-                    <div class="d-flex align-items-center gap-2 text-muted">
-                        <i class="fas fa-tint"></i>
-                        <span>Last Watered</span>
-                    </div>
-                    <span class="last-watered-date" data-plant-id="{{ plant.id }}">
-                        {% if plant.last_watered %}
-                            {{ plant.last_watered|date:"M j" }}
-                        {% else %}
-                            Never
-                        {% endif %}
-                    </span>
-                </div>
-                
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex align-items-center gap-2 text-muted">
-                        <i class="fas fa-history"></i>
-                        <span>Days Since</span>
-                    </div>
-                    <span class="days-since-watered watering-status 
-                        {% if plant.days_since_watered >= 7 %}status-danger
-                        {% elif plant.days_since_watered >= 3 %}status-warning
-                        {% else %}status-good{% endif %}" 
-                        data-plant-id="{{ plant.id }}">
-                        {{ plant.days_since_watered|default:"-" }}
-                    </span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card-footer position-relative">
-            <button class="btn btn-primary w-100 water-plant-btn" data-plant-id="{{ plant.id }}"
-                    onclick="event.stopPropagation()">
-                <i class="fas fa-tint me-2"></i>Water Now
-            </button>
-        </div>
+  <div class="card h-100 plant-card position-relative">
+
+    <!-- Card header with name and dropdown -->
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="card-title mb-0">{{ plant.name }}</h5>
+      <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="{% url 'edit_plant' plant.id %}">
+            <i class="fas fa-edit me-2"></i>Edit</a></li>
+          <li>
+            <form method="post" action="{% url 'delete_plant' plant.id %}"
+                  onsubmit="return confirm('Delete this plant?')">
+              {% csrf_token %}
+              <button type="submit" class="dropdown-item text-danger">
+                <i class="fas fa-trash me-2"></i>Delete
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
     </div>
+
+    <!-- Only body is clickable -->
+    <a href="{% url 'plant_detail' plant.id %}" class="card-main-link text-decoration-none text-body">
+      <div class="card-body">
+        {% if plant.description %}
+          <p class="card-text">{{ plant.description|truncatechars:100 }}</p>
+        {% endif %}
+
+        {% if plant.location %}
+          <p class="card-text">
+            <small class="text-muted">
+              <i class="fas fa-map-marker-alt me-2"></i>{{ plant.location }}
+            </small>
+          </p>
+        {% endif %}
+
+        <div class="watering-info mt-3">
+          <div class="d-flex justify-content-between mb-2">
+            <div class="d-flex align-items-center gap-2 text-muted">
+              <i class="fas fa-tint"></i>
+              <span>Last Watered</span>
+            </div>
+            <span class="last-watered-date" data-plant-id="{{ plant.id }}">
+              {% if plant.last_watered %}
+                {{ plant.last_watered|date:"M j" }}
+              {% else %}
+                Never
+              {% endif %}
+            </span>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-2 text-muted">
+              <i class="fas fa-history"></i>
+              <span>Days Since</span>
+            </div>
+            <span class="days-since-watered watering-status
+              {% if plant.days_since_watered >= 7 %}status-danger
+              {% elif plant.days_since_watered >= 3 %}status-warning
+              {% else %}status-good{% endif %}"
+              data-plant-id="{{ plant.id }}">
+              {{ plant.days_since_watered|default:"-" }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Footer: water button -->
+    <div class="card-footer">
+      <button class="btn btn-primary w-100 water-plant-btn" data-plant-id="{{ plant.id }}">
+        <i class="fas fa-tint me-2"></i>Water Now
+      </button>
+    </div>
+  </div>
 </div>

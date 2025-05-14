@@ -10,5 +10,5 @@ urlpatterns = [
     path('water/all/', views.water_all, name='water_all'),
     path('water/category/<str:category>/', views.water_category, name='water_category'),
     path('plant/<int:pk>/', views.PlantDetailView.as_view(), name='plant_detail'),
-
+    path('settings/grouping/', views.update_grouping, name='update_grouping'),
 ]

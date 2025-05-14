@@ -5,8 +5,8 @@ class Plant(models.Model):
     name = models.CharField(max_length=100)
     species = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    location = models.CharField(max_length=100, blank=True, null=True)
-    category = models.CharField(max_length=100, blank=True, null=True)
+    location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True, blank=True)    
+    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
     created_date = models.DateField(auto_now_add=True)
     image = models.ImageField(upload_to='plant_images/', blank=True, null=True)
     watering_interval = models.PositiveIntegerField(default=7)
@@ -48,3 +48,18 @@ class Watering(models.Model):
 
     class Meta:
         ordering = ['-date']
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+class Location(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name

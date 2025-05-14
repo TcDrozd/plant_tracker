@@ -1,7 +1,6 @@
 /* ==================== */
 /* BASE & LAYOUT STYLES */
 /* ==================== */
-
 body {
     background-color: #15181d;
     color: #e9ecef;
@@ -20,14 +19,9 @@ body {
     background-color: #1a1e24 !important;
 }
 
-.text-muted {
-    color: #868e96 !important;
-}
-
 /* ============== */
 /* TYPOGRAPHY */
 /* ============== */
-
 h1, h2, h3 {
     font-weight: 600;
     letter-spacing: -0.025em;
@@ -38,10 +32,13 @@ h1, h2, h3 {
     color: #f8f9fa;
 }
 
+.text-muted {
+    color: #868e96 !important;
+}
+
 /* ============== */
 /* FORM ELEMENTS */
 /* ============== */
-
 .form-control {
     border-radius: 0.25rem;
 }
@@ -80,22 +77,35 @@ select:focus {
 /* ============== */
 /* CARD COMPONENTS */
 /* ============== */
-
 .plant-card {
     background: linear-gradient(145deg, #1a1e24, #23282f);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; /* Merged duplicate */
 }
 
 .plant-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.plant-card .dropdown {
+    z-index: 10;
+}
+
+.plant-card a:hover {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
 .card-header {
     background: rgba(255, 255, 255, 0.03);
+    background-color: #23282f;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 2;
+    background-color: inherit;
 }
 
 .card-header h5 {
@@ -103,29 +113,45 @@ select:focus {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 80%;
-    color: #212529; /* Explicit dark color */
-    font-weight: 600; /* Maintains boldness */
-    margin-bottom: 0; /* Removes default margin */
 }
 
-/* Dropdown menu contrast */
-.card-header .dropdown-menu {
+.card-body,
+.card-footer {
+    position: relative;
+    z-index: 2;
+    background-color: inherit;
+}
+
+.card-main-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-main-link:hover .card-header,
+.card-main-link:hover .card-body {
+    background-color: rgba(23, 162, 184, 0.05);
+}
+
+/* ============== */
+/* DROPDOWN MENUS */
+/* ============== */
+.dropdown-menu {
     background-color: #23282f;
     border: 1px solid rgba(255,255,255,0.1);
+    z-index: 1000;
 }
 
-.card-header .dropdown-item {
+.dropdown-item {
     color: #e9ecef;
 }
 
-.card-header .dropdown-item:hover {
+.dropdown-item:hover {
     background-color: rgba(23, 162, 184, 0.2);
 }
 
 /* ============== */
 /* WATERING SYSTEM */
 /* ============== */
-
 .watering-info {
     padding: 1rem;
     background: rgba(255, 255, 255, 0.03);
@@ -146,21 +172,19 @@ select:focus {
     background: rgba(40, 167, 69, 0.15);
     color: #28a745;
 }
-
 .status-warning {
     background: rgba(255, 193, 7, 0.15);
     color: #ffc107;
 }
-
 .status-danger {
     background: rgba(220, 53, 69, 0.15);
     color: #dc3545;
 }
 
+
 /* ============== */
 /* BUTTONS */
 /* ============== */
-
 .water-plant-btn {
     background: linear-gradient(45deg, #17a2b8, #138496);
     border: none;
@@ -194,16 +218,9 @@ select:focus {
 /* ============== */
 /* ANIMATIONS */
 /* ============== */
-
 @keyframes waterRipple {
-    0% {
-        opacity: 1;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.5);
-    }
+    0% { opacity: 1; transform: scale(0.8); }
+    100% { opacity: 0; transform: scale(1.5); }
 }
 
 .watering-animation {
@@ -238,9 +255,8 @@ select:focus {
 }
 
 /* ============== */
-/* LAYOUT COMPONENTS */
+/* CATEGORY SYSTEM */
 /* ============== */
-
 .category-group {
     margin-bottom: 3rem;
 }
@@ -259,36 +275,20 @@ select:focus {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #e9ecef; /* for text color */
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3); /* Improves readability */
+    color: #e9ecef;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
-/* More contrast on the water all button */
-.category-header .btn-outline-info {
-    color: #17a2b8;
-    border-color: #17a2b8;
+.category-header:hover {
+    background: linear-gradient(90deg, rgba(23, 162, 184, 0.25), transparent) !important;
 }
 
-.empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    border: 1px dashed rgba(255, 255, 255, 0.1);
+.badge.bg-teal {
+    background-color: #20c997;
+    font-weight: 500;
+    font-size: 0.75em;
 }
 
-.empty-state i {
-    font-size: 3rem;
-    color: #17a2b8;
-    margin-bottom: 1.5rem;
-    opacity: 0.8;
-}
-
-.empty-state .btn {
-    margin-top: 1.5rem;
-}
-
-/* Collapse Indicators */
 .collapse-icon {
     transition: transform 0.2s ease;
     font-size: 0.9em;
@@ -299,24 +299,33 @@ select:focus {
     transform: rotate(-90deg);
 }
 
-/* Category Badges */
-.badge.bg-teal {
-    background-color: #20c997;
-    font-weight: 500;
-    font-size: 0.75em;
-}
-
-/* Hover Effects */
-.category-header:hover {
-    background: linear-gradient(90deg, rgba(23, 162, 184, 0.25), transparent) !important;
-}
-
-/* Smooth Transitions */
 .collapse {
     transition: height 0.3s ease, opacity 0.2s ease;
 }
 
-/* Plant Detail Styles */
+/* ============== */
+/* CLICKABLE AREAS */
+/* ============== */
+.card-clickable-area,
+.plant-detail-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    opacity: 0;
+}
+
+.card-clickable-area:hover {
+    opacity: 0.1;
+    background-color: var(--bs-primary);
+    transition: opacity 0.2s ease;
+}
+
+/* ============== */
+/* PLANT DETAIL */
+/* ============== */
 .plant-detail-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -366,7 +375,9 @@ select:focus {
     margin-bottom: 0.5rem;
 }
 
-/* Timeline Styles */
+/* ============== */
+/* TIMELINE */
+/* ============== */
 .timeline {
     position: relative;
     padding-left: 40px;
@@ -437,32 +448,24 @@ select:focus {
     line-height: 1.6;
 }
 
-/* ==================== */
-.card-clickable-area {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    opacity: 0;
+/* ============== */
+/* EMPTY STATES */
+/* ============== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
-.card-clickable-area:hover {
-    opacity: 0.1;
-    background-color: var(--bs-primary);
-    transition: opacity 0.2s ease;
+.empty-state i {
+    font-size: 3rem;
+    color: #17a2b8;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
 }
 
-.card-header, 
-.card-body, 
-.card-footer {
-    position: relative;
-    z-index: 2; /* Ensure content stays above clickable area */
-    background-color: inherit; /* Maintain card background */
-}
-
-/* Better dropdown positioning */
-.dropdown-menu {
-    z-index: 1000;
+.empty-state .btn {
+    margin-top: 1.5rem;
 }
